@@ -751,14 +751,22 @@ c	 VISWALT=VISS
 
 c      YPLSCR=0.D0
 c      IF(ISTEP .GE. 12000) YPLSCR=4.
-
+      ROUGHNESS=0.003D0
+      CONST_A=1.D0
+      CONST_B=1.D0
+      RE=UREF*DELTA*DENSIT/VISCOS
+      
 c     Calculation of y+ and FMU
       DO 124 J=2,NYM1
        YPLS(J)=RHO(J)*USB*Y(J)/VISWALB				!FTP based on wall viscosity
        IF(J.GT.NYUX) YPLS(J)=RHO(J)*UST*(Y(NY)-Y(J))/VISWALT 	!FTP based on wall vis and at upper half
-       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))*(1.D0-DEXP(-YPLS(J)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
+c       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))*(1.D0-DEXP(-YPLS(J)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
 c       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1))*
 c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
+
+       AUX_HICK=(CONST_A*ROUGHNESS/DELTA+RE**(-1.D0/4.D0))
+       FMU(J)=CONST_B*DEXP(-1.D0/YPLS(J)*(AUX_HICK)**(1.D0/3.D0))
+       
        AUXRT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISS
        FT(J)=1.D0+3.5D0*DEXP(-AUXRT*AUXRT/1.5D2/1.5D2)	!Nagano & Shimada (1993) and Park and Sung
 c       FT(J)=1.D0
