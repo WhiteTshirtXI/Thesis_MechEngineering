@@ -1,0 +1,182 @@
+1000.,144.22D0,900.			   !DENSIT, lambda, L**2   FENE-P
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+0.001,0.000111				   !Visc solvent, Visc polymer
+0.008728	  				   !UREF
+
+
+1000.,0.0D0,900.			   !DENSIT, lambda, L**2   FENE-P
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+0.001111,0.000				   !Visc solvent, Visc polymer
+0.007960	  				   !UREF
+
+
+
+
+1000.,144.22D0,900.			   !DENSIT, lambda, L**2   FENE-P
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+0.001,0.000111				   !Visc solvent, Visc polymer
+0.008728	  				   !UREF
+
+
+
+1000.,0.01,100.				   !DENSIT, lambda, L**2   FENE-P
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+0.001,0.0001				   !Visc solvent, Visc polymer
+2.12	  				   !UREF
+
+
+
+
+
+0.2491,1000.                              !VISCOS,DENSIT     0.125PAA
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+8.25 0.425 1.4796 		                   !VISKE,VISN,VISP Old Ke=1.9394
+10. 0.45                                   !VISAEPS,VISA2
+2.12,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+ 
+
+0.00987,1000.                              !VISCOS,DENSIT     Fluidos DNS Dimitropoulos L=30
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+8.179 0.991 1.6277 		                   !VISKE,VISN,VISP  
+10. 0.45                                   !VISAEPS,VISA2
+0.4512,0.  				   !UREF,OMEGA
+45.,0.0,4.					!CCONST,C0,BB
+
+
+0.01,1000.                              !VISCOS,DENSIT     Fluidos DNS Ptasinski
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+9.741 0.9576 1.438 		                   !VISKE,VISN,VISP  
+10. 0.45                                   !VISAEPS,VISA2
+2.037,0.  				   !UREF,OMEGA
+70.,3.0,4.					!CCONST,C0,BB
+
+
+
+0.00983,1000.                              !VISCOS,DENSIT     Fluidos DNS Dimitropoulos L=10
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+2.62 0.99 1.15 		                   !VISKE,VISN,VISP  
+10. 0.45                                   !VISAEPS,VISA2
+0.3972,0.  				   !UREF,OMEGA
+70.,3.0,4.					!CCONST,C0,BB
+
+
+
+0.00987,1000.                              !VISCOS,DENSIT     Fluidos DNS Dimitropoulos L=30
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+7.25 0.991 1.2924 		                   !VISKE,VISN,VISP  
+10. 0.45                                   !VISAEPS,VISA2
+0.4512,0.  				   !UREF,OMEGA
+70.,3.0,4.					!CCONST,C0,BB
+
+
+
+0.2491,1000.                              !VISCOS,DENSIT     0.125PAA
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+8.25 0.425 1.4796 		                   !VISKE,VISN,VISP  Old Ke=1.9394
+10. 0.45                                   !VISAEPS,VISA2
+2.5,0.  				   !UREF,OMEGA
+70.,3.0,4.					!CCONST,C0,BB
+
+
+0.2491,1000.                              !VISCOS,DENSIT     0.125PAA
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+8.25 0.425 1.4796 		                   !VISKE,VISN,VISP Old Ke=1.9394
+10. 0.45                                   !VISAEPS,VISA2
+2.12,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+0.2491,1000.                              !VISCOS,DENSIT     0.125PAA
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+1.9394 0.425 1.4796 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+1.0,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+0.005,1000.                              !VISCOS,DENSIT     Water
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+1.0 1.0 1.0 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+1.669,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+
+0.2528,1000.                              !VISCOS,DENSIT    0.4CMC 
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+0.9283 0.6177 1.3982 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+1.65,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+
+0.2701,1000.                              !VISCOS,DENSIT    0.2XG 
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+3.8519 0.4409 1.2592 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+1.8,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+0.7849,1000.                              !VISCOS,DENSIT    0.2PAA
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+9.865 0.4075 1.3175 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+1.0,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+0.2639,1000.                              !VISCOS,DENSIT     0.25CMC
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+2.076 0.6174 1.2678 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+4.0,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+0.2748,1000.                              !VISCOS,DENSIT     0.3CMC
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+2.7485 0.6377 1.2214 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+2.0,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+
+0.15178,1000.                              !VISCOS,DENSIT      0.09CMC+0.09XG
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+2.1833 0.5783 1.1638 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+3.0,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+
+
+
+0.2491,1000.                              !VISCOS,DENSIT     0.125PAA
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+8.25 0.425 1.4796 		                   !VISKE,VISN,VISP  old Ke=1.9394
+10. 0.45                                   !VISAEPS,VISA2
+2.0,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
+
+
+0.005,1000.                              !VISCOS,DENSIT     Water
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+1.0 1.0 1.0 		                   !VISKE,VISN,VISP
+10. 0.45                                   !VISAEPS,VISA2
+1.669,0.  				   !UREF,OMEGA
+32.,+1.1,4.					!CCONST,C0,BB
