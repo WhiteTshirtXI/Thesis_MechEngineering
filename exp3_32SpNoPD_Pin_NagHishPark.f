@@ -117,6 +117,7 @@ c
       
       OPEN(7,FILE='OUNoD.TXT')
       OPEN(8,FILE='OUnorNoD.TXT')
+      OPEN(9,FILE='RExf.TXT')
  
       IF(MODEL.EQ.1) THEN
        PRTUR(INU)=1.
@@ -140,6 +141,15 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
       ENDIF
 
       TH=2./3.
+
+      ROUGHNESS=0.003D0
+      CONST_A=1.D0
+      CONST_B=1.D0
+
+      REMIN=3.0D3; REMAX=3.0D6; RESTEP=3.0D3
+      DO 1000 RE_HICK=REMIN,REMAX,RESTEP
+
+      UREF=RE_HICK*VISCOS/(DENSIT*DELTA) !HICK: This must be done in order to use this value of UREF inside the subrotines
 
       CALL GRID
       CALL INIT
@@ -179,17 +189,26 @@ C     PERFORM IN-STEP ITERATIONS
 
       IF(ISTEP .LT. 10000) THEN
         IF(MOD(ISTEP,1000).EQ.0) THEN
-          IF (DABS((DPREF-DPDXB)/DPDXB) .LT. 1.E-10) GOTO 1001	!used 5.0E-11 previously !DOAC- for controlling interative convergence
+          IF (DABS((DPREF-DPDXB)/DPDXB) .LT. 1.E-10) THEN
+              CALL OUTPUT	!used 5.0E-11 previously !DOAC- for controlling interative convergence
+              EXIT
+          ENDIF
         ENDIF
       ELSE
         IF(MOD(ISTEP,500).EQ.0) THEN
-          IF (DABS((DPREF-DPDXB)/DPDXB) .LT. 1.E-10) GOTO 1001	!used 5.0E-11 previously !DOAC- for controlling interative convergence
+          IF (DABS((DPREF-DPDXB)/DPDXB) .LT. 1.E-10) THEN
+              CALL OUTPUT	!used 5.0E-11 previously !DOAC- for controlling interative convergence
+              EXIT
+          ENDIF
         ENDIF
       END IF
        DPREF=DPDXB							!DOAC- for controlling interative convergence
   999 CONTINUE
 
+ 1000 CONTINUE
+
  1001 CALL OUTPUT
+      CLOSE(9)
       STOP
       END
 
@@ -733,10 +752,6 @@ c	 VISWALT=VISS
 
 c      YPLSCR=0.D0
 c      IF(ISTEP .GE. 12000) YPLSCR=4.
-      ROUGHNESS=0.003D0
-      CONST_A=1.D0
-      CONST_B=1.D0
-      RE=UREF*DELTA*DENSIT/VISCOS
       
 c     Calculation of y+ and FMU
       DO 124 J=2,NYM1
@@ -746,7 +761,7 @@ c       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))*(1.D0-DEXP(-YPLS(J)/2.65D1)) !Nagano
 c       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1))*
 c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
 
-       AUX_HICK=(CONST_A*ROUGHNESS/DELTA+RE**(-1.D0/4.D0))
+       AUX_HICK=(CONST_A*ROUGHNESS/DELTA+RE_HICK**(-1.D0/4.D0))
        FMU(J)=CONST_B*DEXP(-1.D0/YPLS(J)*(AUX_HICK)**(1.D0/3.D0))
        
        AUXRT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISS
@@ -1959,6 +1974,8 @@ C      WRITE(7,*) 'FDM1=',FDM1,'  REG=',REG
      +      TAUWB,USB,CFB,USBC,TAUWT,UST,CFT,USTC,FDARCY,VISWALB,VISWALT
 C      WRITE(8,*) 'FDM1=',FDM1,'  REG=',REG
       WRITE(8,95)RETAU,RETAU0,REMED,WETAU,WETAU0,WEMED
+
+      WRITE(9,*) REMED,FDARCY
 
 
       PK(1)=0.
