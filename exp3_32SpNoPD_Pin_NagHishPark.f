@@ -179,26 +179,10 @@ C     PERFORM IN-STEP ITERATIONS
 
       IF(ISTEP .LT. 10000) THEN
         IF(MOD(ISTEP,1000).EQ.0) THEN
-          WRITE(*,*) 'ISTEP= ',ISTEP,'DPDXB= ',DPDXB,' ERR = ',
-     1     (DPREF-DPDXB)/DPDXB,' XMUTP12 = ',XMUTP12(48),' VC22 =',
-     1     VC22(48),'TLN11 =',TLN11(48),'TLN22 =',TLN22(48),
-     1     'TLN33 =',TLN33(48),'TLN12 =',TLN12(48)
-          WRITE(7,*) 'ISTEP= ',ISTEP,'DPDXB= ',DPDXB,' ERR = ',
-     1     (DPREF-DPDXB)/DPDXB,' XMUTP12 = ',XMUTP12(48),' VC22 =',
-     1     VC22(48),'TLN11 =',TLN11(48),'TLN22 =',TLN22(48),
-     1     'TLN33 =',TLN33(48),'TLN12 =',TLN12(48)
           IF (DABS((DPREF-DPDXB)/DPDXB) .LT. 1.E-10) GOTO 1001	!used 5.0E-11 previously !DOAC- for controlling interative convergence
         ENDIF
       ELSE
         IF(MOD(ISTEP,500).EQ.0) THEN
-          WRITE(*,*) 'ISTEP= ',ISTEP,'DPDXB= ',DPDXB,' ERR = ',
-     1     (DPREF-DPDXB)/DPDXB,' XMUTP12 = ',XMUTP12(48),' VC22 =',
-     1     VC22(48),'TLN11 =',TLN11(48),'TLN22 =',TLN22(48),
-     1     'TLN33 =',TLN33(48),'TLN12 =',TLN12(48)
-          WRITE(7,*) 'ISTEP= ',ISTEP,'DPDXB= ',DPDXB,' ERR = ',
-     1     (DPREF-DPDXB)/DPDXB,' XMUTP12 = ',XMUTP12(48),' VC22 =',
-     1     VC22(48),'TLN11 =',TLN11(48),'TLN22 =',TLN22(48),
-     1     'TLN33 =',TLN33(48),'TLN12 =',TLN12(48)
           IF (DABS((DPREF-DPDXB)/DPDXB) .LT. 1.E-10) GOTO 1001	!used 5.0E-11 previously !DOAC- for controlling interative convergence
         ENDIF
       END IF
@@ -317,8 +301,6 @@ c    even though some are not yet necessary. It just helps debugging.
        FF1(NY)=0.0
        FMUCU(1)=0.0
        FMUCU(NY)=0.0
-       WRITE(*,*) 'Re=',RE,' UT=',UT	!For debugging
-       WRITE(*,*) 'L**2=', AL2		!For debugging
        
 
       DO 15 J=1,NYCL
@@ -1076,7 +1058,6 @@ c     +           ' C2SOL2=',C2SOL2,' C2SOL3=',C2SOL3
 c	     WRITE(7,*)'C11(',J,')=',C11(J),' C1SOL1=',C1SOL1,
 c     +                 ' C1SOL2=',C1SOL2,' C1SOL3=',C1SOL3
 CCCC	       WRITE(*,*)'Problems in C22'
-CCCC	       PAUSE
 
 	       C11(J)=C11OLD
 	       C22(J)=C22OLD
