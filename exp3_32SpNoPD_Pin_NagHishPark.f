@@ -142,13 +142,14 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
 
       TH=2./3.
 
-      ROUGHNESS=0.00D0
-      CONST_A=11.D0
-      CONST_B=0.D0
+      ROUGHNESS=1.D-01
+      CONST_A=5.D0
+      CONST_B=1.0D-06
 
-      REMIN=3.0D3; REMAX=3.0D6; RESTEP=1.0D4
-      DO 1000 COUNTLOOP=REMIN,REMAX,RESTEP
-      RE_HICK=3.0D3
+      AMIN=3.0D3; AMAX=9.D5; ASTEP=1.0D4
+      DO 1000 COUNTLOOP=AMIN,AMAX,ASTEP
+      RE_HICK=COUNTLOOP
+c      CONST_A=477.7D0*RE_HICK**(-0.292D0)
       UREF=RE_HICK*VISCOS/(DENSIT*DELTA) !HICK: This must be done in order to use this value of UREF inside the subrotines
 
       CALL GRID
@@ -761,15 +762,12 @@ c       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))*(1.D0-DEXP(-YPLS(J)/2.65D1)) !Nagano
 c       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1))*
 c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
 
-c       AUX_HICK=(CONST_A*ROUGHNESS/DELTA+RE_HICK**(-1.D0/4.D0))
-c       FMU(J)=CONST_B*DEXP(-1.D0/YPLS(J)*(AUX_HICK)**(1.D0/3.D0))
+      ROUGH_TERM = CONST_B*(RHO(J)*USB*ROUGHNESS/VISWALB)
+       AUX_H=-CONST_A/(YPLS(J) + ROUGH_TERM)
+       FMU(J)=DEXP(AUX_H)
 
-       AUX_H=-CONST_A*(1.D0/(RE_HICK**(3.0D0/4.0D0))
-     1 +CONST_B*ROUGHNESS/DELTA)
-       FMU(J)=DEXP(AUX_H/(Y(J)/DELTA))
-
-       AUXRT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISS
-       FT(J)=1.D0+3.5D0*DEXP(-AUXRT*AUXRT/1.5D2/1.5D2)	!Nagano & Shimada (1993) and Park and Sung
+      AUXRT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISS
+      FT(J)=1.D0+3.5D0*DEXP(-AUXRT*AUXRT/1.5D2/1.5D2)	!Nagano & Shimada (1993) and Park and Sung
 c       FT(J)=1.D0
 c     End of calculation of y+
 
@@ -1979,7 +1977,7 @@ C      WRITE(7,*) 'FDM1=',FDM1,'  REG=',REG
 C      WRITE(8,*) 'FDM1=',FDM1,'  REG=',REG
       WRITE(8,95)RETAU,RETAU0,REMED,WETAU,WETAU0,WEMED
 
-      WRITE(9,*) REMED,FDARCY
+      WRITE(9,*) RE_HICK,FDARCY
 
 
       PK(1)=0.
