@@ -144,7 +144,8 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
 
       ROUGHNESS=1.D-01
       CONST_A=5.D0
-      CONST_B=1.0D-06
+      CONST_B=1.0D-05
+      CONST_C=1.0D04
 
       AMIN=3.0D3; AMAX=9.D5; ASTEP=1.0D4
       DO 1000 COUNTLOOP=AMIN,AMAX,ASTEP
@@ -771,7 +772,8 @@ c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987
 c       FT(J)=1.D0
 c     End of calculation of y+
 
-      XMUT(J)=RHO(J)*FMU(J)*CMU*TK(J)*TK(J)/(TE(J)+TEEV(J)+SMALL1)		!FTP FMU for low Reynolds
+      XMUT(J)=RHO(J)*FMU(J)*CMU*TK(J)*TK(J)/(TE(J)+TEEV(J)+SMALL1) +
+     1 CONST_C*USB*ROUGHNESS                                     !FTP FMU for low Reynolds
 c      XMUT(J)=RHO(J)*FMU(J)*CMU*TK(J)*TK(J)/(TE(J)+SMALL1)		!FTP FMU for low Reynolds
       TEE(J)=TE(J)+2.D0*XMUL(J)/RHO(J)*DSQTKDY(J)*DSQTKDY(J)	!epsilon=epsilontilde + D   (for low Reynolds)
 
