@@ -142,9 +142,9 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
 
       TH=2./3.
 
-      ROUGHNESS=1.D-01
-      CONST_A=5.D0
-      CONST_B=1.0D-05
+      ROUGHNESS=1.D-03
+      CONST_A=11.D0
+      CONST_B=-1.0D5
       CONST_C=1.0D04
 
       AMIN=3.0D3; AMAX=9.D5; ASTEP=1.0D4
@@ -763,17 +763,17 @@ c       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))*(1.D0-DEXP(-YPLS(J)/2.65D1)) !Nagano
 c       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1))*
 c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
 
-      ROUGH_TERM = CONST_B*(RHO(J)*USB*ROUGHNESS/VISWALB)
-       AUX_H=-CONST_A/(YPLS(J) + ROUGH_TERM)
-       FMU(J)=DEXP(AUX_H)
+       ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
+       G1=SQRT(ROUGHPLUS(J)/200.D0)
+       FMU(J)=1 - DEXP(-(YPLS(J)/42.D0)**2.D0) +
+     1  G1*DEXP(-25.D0*YPLS(J)/ROUGHPLUS(J))
 
       AUXRT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISS
       FT(J)=1.D0+3.5D0*DEXP(-AUXRT*AUXRT/1.5D2/1.5D2)	!Nagano & Shimada (1993) and Park and Sung
 c       FT(J)=1.D0
 c     End of calculation of y+
 
-      XMUT(J)=RHO(J)*FMU(J)*CMU*TK(J)*TK(J)/(TE(J)+TEEV(J)+SMALL1) +
-     1 CONST_C*USB*ROUGHNESS                                     !FTP FMU for low Reynolds
+      XMUT(J)=RHO(J)*FMU(J)*CMU*TK(J)*TK(J)/(TE(J)+TEEV(J)+SMALL1) !FTP FMU for low Reynolds
 c      XMUT(J)=RHO(J)*FMU(J)*CMU*TK(J)*TK(J)/(TE(J)+SMALL1)		!FTP FMU for low Reynolds
       TEE(J)=TE(J)+2.D0*XMUL(J)/RHO(J)*DSQTKDY(J)*DSQTKDY(J)	!epsilon=epsilontilde + D   (for low Reynolds)
 
@@ -1782,14 +1782,19 @@ c      JF=1
 c      JL=NY
       IVAR=INE
 
+      !ROUGHPLUS(1)=RHO(1)*USB*ROUGHNESS/VISWALB
       DO 510 J=JF,JL
 c       IF (J .LE. NYUX) REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISWALB	!FTP- turbulent Reynolds =k**2/eps/niuwall
-c       IF (J .GT. NYUX) REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISWALT	!FTP- turbulent Reynolds =k**2/eps/niuwall       
+c       IF (J .GT. NYUX) REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISWALT	!FTP- turbulent Reynolds =k**2/eps/niuwall
+       
        REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/XMUL(J)	!FTP- turbulent Reynolds =k**2/eps/niu
        FU2=1.D0-3.D-1*DEXP(-REYT*REYT)	!FTP- according to model of Nagano and Hishida (1987)
-       FU1=1.D0	!FTP- according to model of Nagano and Hishida (1987)
+      
+       ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
+       G2(J)=DEXP(-1/(.1D0+1/ROUGHPLUS(J)))
+       FU1(J)=1.D0+G2(J)*(9.2D0/(1+YPLS(J)**6))	!FTP- according to model of Nagano and Hishida (1987)
 
-       SU(J)=FU1*CD1*PK(J)*EDK(J)+(VISS)/RHO(J)*
+       SU(J)=FU1(J)*CD1*PK(J)*EDK(J)+(VISS)/RHO(J)*
      1       XMUT(J)/RHO(J)*(1.D0-FMU(J))*D2UDY2(J)*D2UDY2(J)		!FTP SU=SUNEWT + SUNEWTlowRe 
 
 CCC  FROM OLD MODEL THE NEXT 8 INSTRUCTIONS
