@@ -16,7 +16,7 @@ c      DATA NITERM,URF/1,14*0.3/		!initially URF=0.3
 C-----GRID-RELATED INDECES
       DATA INGEOM/1/			!1-channel, 2- pipe
       DATA NY/99/
-      DATA DELTA,XLAST,ANGLE,RI/5.0E-1,40.,0.,0./	!delta=pipe radius or channel half-height
+      DATA DELTA,XLAST,ANGLE,RI/1.0E0,40.,0.,0./	!delta=pipe radius or channel half-height
       DATA DYIDX,DYEDX,DDELDX/3*0.0/
       DATA XU,XD,DX/2*0.,1.0E30/
 
@@ -142,16 +142,16 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
 
       TH=2./3.
 
-      ROUGHNESS=1.0D-3
-      CONST_A=1.D0
-      CONST_B=0.0D0
-      CONST_C=2.5D1
+      ROUGHNESS=1.D-03
+      CONST_A=11.D0
+      CONST_B=-1.0D5
+      CONST_C=1.0D04
 
-      AMIN=2.0D5; AMAX=9.D5; ASTEP=5.0D4
+      AMIN=3.0D3; AMAX=9.D5; ASTEP=1.0D4
       DO 1000 COUNTLOOP=AMIN,AMAX,ASTEP
       RE_HICK=COUNTLOOP
-c      CONST_A=812.49D0*RE_HICK**(-0.219D0)
-      UREF=RE_HICK*VISCOS/(DENSIT*2.0D0*DELTA) !HICK: This must be done in order to use this value of UREF inside the subrotines
+c      CONST_A=477.7D0*RE_HICK**(-0.292D0)
+      UREF=RE_HICK*VISCOS/(DENSIT*DELTA) !HICK: This must be done in order to use this value of UREF inside the subrotines
 
       CALL GRID
       CALL INIT
@@ -764,17 +764,9 @@ c       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1))*
 c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
 
        ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
-       AUX_H=CONST_A*(1.D0/(RE_HICK**(3.0D0/4.0D0))
-     1 +CONST_B*ROUGHPLUS(J))
-       
-       ROUGH_DUMP=CONST_C*YPLS(J)/ROUGHPLUS(J)
-
-       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))**2.D0+
-     1 DEXP(-AUX_H)*DEXP(-ROUGH_DUMP)
-       
-c       G1=SQRT(ROUGHPLUS(J)/200.D0)
-c       FMU(J)=1 - DEXP(-(YPLS(J)/42.D0)**2.D0) +
-c     1  G1*DEXP(-25.D0*YPLS(J)/ROUGHPLUS(J))
+       G1=SQRT(ROUGHPLUS(J)/200.D0)
+       FMU(J)=1 - DEXP(-(YPLS(J)/42.D0)**2.D0) +
+     1  G1*DEXP(-25.D0*YPLS(J)/ROUGHPLUS(J))
 
       AUXRT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISS
       FT(J)=1.D0+3.5D0*DEXP(-AUXRT*AUXRT/1.5D2/1.5D2)	!Nagano & Shimada (1993) and Park and Sung
@@ -1993,7 +1985,6 @@ C      WRITE(8,*) 'FDM1=',FDM1,'  REG=',REG
       WRITE(8,95)RETAU,RETAU0,REMED,WETAU,WETAU0,WEMED
 
       WRITE(9,*) RE_HICK,FDARCY
-      WRITE(*,*) RE_HICK,FDARCY
 
 
       PK(1)=0.
