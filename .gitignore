@@ -31,4 +31,7 @@
 # Output Files
 *.txt
 *.TXT
+
+# Specific Generated VS Files
 /.vs
+/x64
