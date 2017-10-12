@@ -1,3 +1,8 @@
+1000.,0.00000001D0,900.        !DENSIT, lambda, L**2     Water
+1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
+1.,0.0							!Visc solvent, Visc polymer
+30.	  							!UREF
+
 1000.,144.22D0,900.			   !DENSIT, lambda, L**2   FENE-P
 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.  !PRLAM
 0.001,0.000111				   !Visc solvent, Visc polymer

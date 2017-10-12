@@ -14,9 +14,9 @@ c      DATA NITERM,URF/1,14*0.3/		!initially URF=0.3
       DATA ICCOUNT/0/
 
 C-----GRID-RELATED INDECES
-      DATA INGEOM/1/			!1-channel, 2- pipe
+      DATA INGEOM/2/			!1-channel, 2- pipe
       DATA NY/99/
-      DATA DELTA,XLAST,ANGLE,RI/1.0E0,40.,0.,0./	!delta=pipe radius or channel half-height
+      DATA DELTA,XLAST,ANGLE,RI/5.0E-1,40.,0.,0./	!delta=pipe radius or channel half-height
       DATA DYIDX,DYEDX,DDELDX/3*0.0/
       DATA XU,XD,DX/2*0.,1.0E30/
 
