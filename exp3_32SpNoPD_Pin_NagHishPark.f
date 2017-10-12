@@ -122,7 +122,7 @@ c
       IF(MODEL.EQ.1) THEN
        PRTUR(INU)=1.
 c       PRTUR(INK)=1.0
-       PRTUR(INK)=1.1		!Nagano & Shimada (1993)
+       PRTUR(INK)=1.0		!Nagano & Shimada (1993)
        PRTUR(INE)=1.3
        CD1=1.45
        CD2=1.90
@@ -142,7 +142,7 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
 
       TH=2./3.
 
-      ROUGHNESS=1.0D-3
+      ROUGHNESS=0.0D-3
       CONST_A=1.D0
       CONST_B=0.0D0
       CONST_C=2.5D1
@@ -769,16 +769,16 @@ c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987
        
        ROUGH_DUMP=CONST_C*YPLS(J)/ROUGHPLUS(J)
 
-       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))**2.D0+
-     1 DEXP(-AUX_H)*DEXP(-ROUGH_DUMP)
+       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))**2.D0
+     1 !+DEXP(-AUX_H)*DEXP(-ROUGH_DUMP)
        
 c       G1=SQRT(ROUGHPLUS(J)/200.D0)
 c       FMU(J)=1 - DEXP(-(YPLS(J)/42.D0)**2.D0) +
 c     1  G1*DEXP(-25.D0*YPLS(J)/ROUGHPLUS(J))
 
       AUXRT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISS
-      FT(J)=1.D0+3.5D0*DEXP(-AUXRT*AUXRT/1.5D2/1.5D2)	!Nagano & Shimada (1993) and Park and Sung
-c       FT(J)=1.D0
+c      FT(J)=1.D0+3.5D0*DEXP(-AUXRT*AUXRT/1.5D2/1.5D2)	!Nagano & Shimada (1993) and Park and Sung
+       FT(J)=1.D0
 c     End of calculation of y+
 
       XMUT(J)=RHO(J)*FMU(J)*CMU*TK(J)*TK(J)/(TE(J)+TEEV(J)+SMALL1) !FTP FMU for low Reynolds
@@ -1800,7 +1800,7 @@ c       IF (J .GT. NYUX) REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISWALT	!FTP- tu
       
        ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
        G2(J)=DEXP(-1/(.1D0+1/ROUGHPLUS(J)))
-       FU1(J)=1.D0+G2(J)*(9.2D0/(1+YPLS(J)**6))	!FTP- according to model of Nagano and Hishida (1987)
+       FU1(J)=1.D0 !+G2(J)*(9.2D0/(1+YPLS(J)**6))	!FTP- according to model of Nagano and Hishida (1987)
 
        SU(J)=FU1(J)*CD1*PK(J)*EDK(J)+(VISS)/RHO(J)*
      1       XMUT(J)/RHO(J)*(1.D0-FMU(J))*D2UDY2(J)*D2UDY2(J)		!FTP SU=SUNEWT + SUNEWTlowRe 
