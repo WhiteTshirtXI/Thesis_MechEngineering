@@ -142,12 +142,12 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
 
       TH=2./3.
 
-      ROUGHNESS=0.0D-3
+      ROUGHNESS=1.0D-3
       CONST_A=1.D0
-      CONST_B=0.0D0
+      CONST_B=2.50D1
       CONST_C=2.5D1
 
-      AMIN=2.0D5; AMAX=9.D5; ASTEP=5.0D4
+      AMIN=2.0D5; AMAX=12.D5; ASTEP=5.0D4
       DO 1000 COUNTLOOP=AMIN,AMAX,ASTEP
       RE_HICK=COUNTLOOP
 c      CONST_A=812.49D0*RE_HICK**(-0.219D0)
@@ -764,13 +764,14 @@ c       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1))*
 c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
 
        ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
-       AUX_H=CONST_A*(1.D0/(RE_HICK**(3.0D0/4.0D0))
-     1 +CONST_B*ROUGHPLUS(J))
+c       AUX_H=CONST_A*(1.D0/(RE_HICK**(3.0D0/4.0D0))
+c     1 +CONST_B*ROUGHPLUS(J))
        
        ROUGH_DUMP=CONST_C*YPLS(J)/ROUGHPLUS(J)
 
-       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))**2.D0
-     1 !+DEXP(-AUX_H)*DEXP(-ROUGH_DUMP)
+       G1=SQRT(ROUGHPLUS(J)/200.D0)
+       FMU(J)=1.D0-DEXP(-YPLS(J)/2.65D1)
+     1 +G1*DEXP(-ROUGH_DUMP)
        
 c       G1=SQRT(ROUGHPLUS(J)/200.D0)
 c       FMU(J)=1 - DEXP(-(YPLS(J)/42.D0)**2.D0) +
@@ -1799,8 +1800,8 @@ c       IF (J .GT. NYUX) REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISWALT	!FTP- tu
        FU2=1.D0-3.D-1*DEXP(-REYT*REYT)	!FTP- according to model of Nagano and Hishida (1987)
       
        ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
-       G2(J)=DEXP(-1/(.1D0+1/ROUGHPLUS(J)))
-       FU1(J)=1.D0 !+G2(J)*(9.2D0/(1+YPLS(J)**6))	!FTP- according to model of Nagano and Hishida (1987)
+       G2=DEXP(-1.D0/(.1D0+1.D0/ROUGHPLUS(J)))
+       FU1(J)=1.D0 + CONST_B*G2*0.2559D0*RE_HICK**-0.068D0!+ (9.2D0/(1+YPLS(J)))**6	!FTP- according to model of Nagano and Hishida (1987)
 
        SU(J)=FU1(J)*CD1*PK(J)*EDK(J)+(VISS)/RHO(J)*
      1       XMUT(J)/RHO(J)*(1.D0-FMU(J))*D2UDY2(J)*D2UDY2(J)		!FTP SU=SUNEWT + SUNEWTlowRe 
