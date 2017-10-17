@@ -145,7 +145,7 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
       ROUGHNESS=1.0D-3
       CONST_A=2.5D1
       CONST_B=1.0D0
-      CONST_C=2.5D0
+      CONST_C=2.5D1
 
       AMIN=2.0D5; AMAX=12.D5; ASTEP=5.0D4
       DO 1000 COUNTLOOP=AMIN,AMAX,ASTEP
@@ -770,7 +770,7 @@ c     1 +CONST_B*ROUGHPLUS(J))
        ROUGH_DUMP=CONST_C*YPLS(J)/ROUGHPLUS(J)
 
        G1=SQRT(ROUGHPLUS(J)/200.D0)
-       FMU(J)=1.D0-DEXP(-YPLS(J)/2.65D1)
+       FMU(J)=1.D0-DEXP(-YPLS(J)/9.D0)
      1 +G1*DEXP(-ROUGH_DUMP)
        
 c       G1=SQRT(ROUGHPLUS(J)/200.D0)
@@ -1800,9 +1800,9 @@ c       IF (J .GT. NYUX) REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISWALT	!FTP- tu
        FU2=1.D0-3.D-1*DEXP(-REYT*REYT)	!FTP- according to model of Nagano and Hishida (1987)
       
        ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
-       G2=(1.D0 + ROUGHPLUS(J))*6.D6*RE_HICK**-1.556D0
-c       G2=DEXP(-1.D0/(.1D0+1.D0/ROUGHPLUS(J)))
-       FU1(J)=1.D0 + G2*0.2559D0*RE_HICK**-0.068D0!+ (9.2D0/(1+YPLS(J)))**6	!FTP- according to model of Nagano and Hishida (1987)
+c       G2=(1.D0 + ROUGHPLUS(J))*6.D6*RE_HICK**-1.556D0
+       G2=DEXP(-1.D0/(.1D0+1.D0/ROUGHPLUS(J)))
+       FU1(J)=1.D0 + G2*(9.2D0/(1.D0+YPLS(J)))**6	!FTP- according to model of Nagano and Hishida (1987)
 
        SU(J)=FU1(J)*CD1*PK(J)*EDK(J)+(VISS)/RHO(J)*
      1       XMUT(J)/RHO(J)*(1.D0-FMU(J))*D2UDY2(J)*D2UDY2(J)		!FTP SU=SUNEWT + SUNEWTlowRe 
