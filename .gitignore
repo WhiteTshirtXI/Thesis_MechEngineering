@@ -35,3 +35,4 @@
 # Specific Generated VS Files
 /.vs
 /x64
+/fort.[1-9]
