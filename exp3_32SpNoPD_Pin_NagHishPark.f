@@ -142,16 +142,22 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
 
       TH=2./3.
 
-      ROUGHNESS=1.0D-3
+      ROUGHNESS=1.0D-4
       CONST_A=2.5D1
       CONST_B=1.0D0
       CONST_C=2.5D1
 
-      AMIN=2.0D5; AMAX=12.D5; ASTEP=5.0D4
+      AMIN=5.0D3; AMAX=5.D7; ASTEP=5.0D4
       DO 1000 COUNTLOOP=AMIN,AMAX,ASTEP
       RE_HICK=COUNTLOOP
 c      CONST_A=812.49D0*RE_HICK**(-0.219D0)
       UREF=RE_HICK*VISCOS/(DENSIT*2.0D0*DELTA) !HICK: This must be done in order to use this value of UREF inside the subrotines
+      
+      TAUW=DENSIT*UREF**2.*0.0225*(1./RE_HICK)**0.25	!Newtonian expression
+
+      UTAU=DSQRT(TAUW/DENSIT)		!friction velocity
+      VISS=UTAU*ROUGHNESS*DENSIT
+      VISCOS=VISS
 
       CALL GRID
       CALL INIT
