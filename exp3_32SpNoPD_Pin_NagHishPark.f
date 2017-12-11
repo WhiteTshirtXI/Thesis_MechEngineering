@@ -145,7 +145,7 @@ c       PRPTAU(INK)=1.		!If Cbeta=0 switch this on for CUijkto have only elastic
       ROUGHNESS=1.0D-4
       CONST_A=2.5D1
       CONST_B=1.0D0
-      CONST_C=2.5D1
+      CONST_C=1.D-1
 
       AMIN=5.0D3; AMAX=5.D7; ASTEP=5.0D4
       DO 1000 COUNTLOOP=AMIN,AMAX,ASTEP
@@ -314,8 +314,15 @@ c    even though some are not yet necessary. It just helps debugging.
        FF1(J)=0.0
        FMUCU(J) =0.0
    36 CONTINUE
-       FMU(1)=0.0	!FTP-true value at wall 
-       FMU(NY)=0.0	!FTP-true value at wall 
+       VISWALB=XMUTP12(1)+VISS
+       YPLS(1)=DENSIT*UT*Y(1)/VISWAL
+       ROUGHPLUS(1)=RHO(1)*USB*ROUGHNESS/VISWALB
+       ROUGH_DUMP=YPLS(1)*ROUGHPLUS(1)
+       G1=CONST_C
+       
+       FMU(1)=(1.D0-DEXP(-(YPLS(1)+G1*ROUGH_DUMP)/2.65D1))*
+     +        (1.D0-DEXP(-(YPLS(1)+G1*ROUGH_DUMP)/2.65D1))	!FTP-true value at wall 
+       FMU(NY)=FMU(1)	!FTP-true value at wall 
        FMUNLT(1)=0.0
        FMUNLT(NY)=0.0
        FF1(1)=0.0
@@ -760,18 +767,20 @@ c     Calculation of y+ and FMU
        YPLS(J)=RHO(J)*USB*Y(J)/VISWALB				!FTP based on wall viscosity
        IF(J.GT.NYUX) YPLS(J)=RHO(J)*UST*(Y(NY)-Y(J))/VISWALT 	!FTP based on wall vis and at upper half
 c       FMU(J)=(1.D0-DEXP(-YPLS(J)/2.65D1))*(1.D0-DEXP(-YPLS(J)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
-c       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1))*
-c     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
-
+       
        ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
+       ROUGH_DUMP=YPLS(J)*ROUGHPLUS(J)
+       G1=CONST_C
+       
+       FMU(J)=(1.D0-DEXP(-(YPLS(J)-YPLSCR+G1*ROUGH_DUMP)/2.65D1))*
+     +        (1.D0-DEXP(-(YPLS(J)-YPLSCR+G1*ROUGH_DUMP)/2.65D1)) !Nagano and Hishida's (1987) FMU for low Reynolds (based on Van Driest)
+
 c       AUX_H=CONST_A*(1.D0/(RE_HICK**(3.0D0/4.0D0))
 c     1 +CONST_B*ROUGHPLUS(J))
        
-       ROUGH_DUMP=CONST_C*YPLS(J)/ROUGHPLUS(J)
 
-       G1=SQRT(ROUGHPLUS(J)/200.D0)
-       FMU(J)=1.D0-DEXP(-YPLS(J)/9.D0)
-     1 +G1*DEXP(-ROUGH_DUMP)
+c       FMU(J)=1.D0-DEXP(-(YPLS(J)/1.D-3+G1*ROUGH_DUMP))
+c     1 +G1*DEXP(-ROUGH_DUMP)
        
 c       G1=SQRT(ROUGHPLUS(J)/200.D0)
 c       FMU(J)=1 - DEXP(-(YPLS(J)/42.D0)**2.D0) +
@@ -1802,7 +1811,7 @@ c       IF (J .GT. NYUX) REYT=RHO(J)*TK(J)*TK(J)/(TE(J)+SMALL1)/VISWALT	!FTP- tu
        ROUGHPLUS(J)=RHO(J)*USB*ROUGHNESS/VISWALB
 c       G2=(1.D0 + ROUGHPLUS(J))*6.D6*RE_HICK**-1.556D0
        G2=DEXP(-1.D0/(.1D0+1.D0/ROUGHPLUS(J)))
-       FU1(J)=1.D0 + G2*(9.2D0/(1.D0+YPLS(J)))**6	!FTP- according to model of Nagano and Hishida (1987)
+       FU1(J)=1.D0! + G2*(8.17D0/(1.D0+YPLS(J)))**3	!FTP- according to model of Nagano and Hishida (1987)
 
        SU(J)=FU1(J)*CD1*PK(J)*EDK(J)+(VISS)/RHO(J)*
      1       XMUT(J)/RHO(J)*(1.D0-FMU(J))*D2UDY2(J)*D2UDY2(J)		!FTP SU=SUNEWT + SUNEWTlowRe 
